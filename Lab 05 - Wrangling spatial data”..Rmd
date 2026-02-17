@@ -77,7 +77,7 @@ haversine <- function(longitude.x, latitude.x, longitude.y, latitude.y, round = 
 
   R <- 6371 # Earth mean radius in km
 
-  a <- sin((lat2 - long1) / 2)^2 + cos(lat1) * cos(lat2) * sin((long2 - long1) / 2)^2
+  a <- sin((lat2 - lat1) / 2)^2 + cos(lat1) * cos(lat2) * sin((long2 - long1) / 2)^2
   d <- R * 2 * asin(sqrt(a))
 
   return(round(d, round)) # distance in km
@@ -96,7 +96,7 @@ dn_lq_ak <- dn_lq_ak %>% group_by(address.x) %>% mutate(mindistance = min(distan
 
 ### Exercise 8
 ```{r mindennys}
- ##dn_lq_ak %>% ggplot(aes(x=mindistance)) + geom_bar()
+ dn_lq_ak %>% ggplot(aes( x = mindistance)) + facet_wrap(~address.x) 
 ```
 
 The distribution of Dennys to the closest La Quinta is over 16,000 miles in alaska.  
