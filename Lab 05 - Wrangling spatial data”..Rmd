@@ -90,13 +90,200 @@ dn_lq_ak <- dn_lq_ak %>% mutate(distance = haversine(longitude.x, latitude.x, lo
 ### Exercise 7
 
 ```{r mindennys}
-dn_lq_ak <- dn_lq_ak %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE))
+dn_lq_ak <- dn_lq_ak %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE)) %>% ungroup()
+
+meandennys <- dn_lq_ak %>% 
+  summarize(meandennys1 = mean(mindistance, na.rm = TRUE)) 
+
+print(meandennys)
 
 ```
 
 ### Exercise 8
 ```{r mindennys}
- dn_lq_ak %>% ggplot(aes( x = mindistance)) + facet_wrap(~address.x) 
+ dn_lq_ak %>% ggplot(aes( x = mindistance, fill=address.x)) + geom_histogram(binwidth = .5) + labs(title = "Denny's in Alaska", subtitle = "The minimum distance from each Denny's to a La Quinta location")
+
+
 ```
 
-The distribution of Dennys to the closest La Quinta is over 16,000 miles in alaska.  
+The mean distance of Dennys to the closest La Quinta is 4.41 km in Alaska. 
+
+### Exercise 9
+```{r filterNC}
+dn_nc <- dennys %>%
+  filter(state == "NC")
+nrow(dn_nc)
+
+```
+
+```{r filterquintaNC}
+lq_nc <- laquinta %>%
+  filter(state == "NC")
+nrow(lq_nc)
+
+```
+
+```{r joindataNC}
+
+dn_lq_nc <- full_join(dn_nc, lq_nc,
+  by = "state"
+)
+dn_lq_nc
+
+```
+
+```{r calculatedistanceNC}
+haversine <- function(longitude.x, latitude.x, longitude.y, latitude.y, round = 3) {
+  
+
+  # convert to radians
+  long1 <- longitude.x * pi / 180
+  lat1 <- latitude.x * pi / 180
+  long2 <- longitude.y * pi / 180
+  lat2 <- latitude.y * pi / 180
+
+  R <- 6371 # Earth mean radius in km
+
+  a <- sin((lat2 - lat1) / 2)^2 + cos(lat1) * cos(lat2) * sin((long2 - long1) / 2)^2
+  d <- R * 2 * asin(sqrt(a))
+
+  return(round(d, round)) # distance in km
+  
+} 
+dn_lq_nc <- dn_lq_nc %>% mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
+
+```
+
+```{r mindennysnc}
+dn_lq_nc <- dn_lq_nc %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE)) %>% ungroup()
+
+meandennys <- dn_lq_nc %>% 
+  summarize(meandennys2 = mean(mindistance, na.rm = TRUE)) 
+
+print(meandennys)
+
+```
+
+
+The mean distance of Dennys to the closest La Quinta is 65.4 km in North Carolina.  
+
+
+### Exercise 10
+```{r filterTX}
+dn_tx <- dennys %>%
+  filter(state == "TX")
+nrow(dn_tx)
+
+```
+
+```{r filterquintaTX}
+lq_tx <- laquinta %>%
+  filter(state == "TX")
+nrow(lq_tx)
+
+```
+
+```{r joindataTX}
+
+dn_lq_tx <- full_join(dn_tx, lq_tx,
+  by = "state"
+)
+dn_lq_tx
+
+```
+
+```{r calculatedistancetx}
+haversine <- function(longitude.x, latitude.x, longitude.y, latitude.y, round = 3) {
+  
+
+  # convert to radians
+  long1 <- longitude.x * pi / 180
+  lat1 <- latitude.x * pi / 180
+  long2 <- longitude.y * pi / 180
+  lat2 <- latitude.y * pi / 180
+
+  R <- 6371 # Earth mean radius in km
+
+  a <- sin((lat2 - lat1) / 2)^2 + cos(lat1) * cos(lat2) * sin((long2 - long1) / 2)^2
+  d <- R * 2 * asin(sqrt(a))
+
+  return(round(d, round)) # distance in km
+  
+} 
+dn_lq_tx <- dn_lq_tx %>% mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
+
+```
+
+```{r mindennystx}
+dn_lq_tx <- dn_lq_tx %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE)) %>% ungroup()
+
+meandennys <- dn_lq_tx %>% 
+  summarize(meandennys3 = mean(mindistance, na.rm = TRUE)) 
+
+print(meandennys)
+
+```
+
+The mean distance of Dennys to the closest La Quinta is 5.79 km in Texas. 
+
+### Exercise 10
+```{r filterIL}
+dn_il <- dennys %>%
+  filter(state == "IL")
+nrow(dn_il)
+
+```
+
+```{r filterquintaIL}
+lq_il <- laquinta %>%
+  filter(state == "IL")
+nrow(lq_il)
+
+```
+
+```{r joindataIL}
+
+dn_lq_il <- full_join(dn_il, lq_il,
+  by = "state"
+)
+dn_lq_il
+
+```
+
+```{r calculatedistanceil}
+haversine <- function(longitude.x, latitude.x, longitude.y, latitude.y, round = 3) {
+  
+
+  # convert to radians
+  long1 <- longitude.x * pi / 180
+  lat1 <- latitude.x * pi / 180
+  long2 <- longitude.y * pi / 180
+  lat2 <- latitude.y * pi / 180
+
+  R <- 6371 # Earth mean radius in km
+
+  a <- sin((lat2 - lat1) / 2)^2 + cos(lat1) * cos(lat2) * sin((long2 - long1) / 2)^2
+  d <- R * 2 * asin(sqrt(a))
+
+  return(round(d, round)) # distance in km
+  
+} 
+dn_lq_il <- dn_lq_il %>% mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
+
+```
+
+```{r mindennysil}
+dn_lq_il <- dn_lq_il %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE)) %>% ungroup()
+
+meandennys <- dn_lq_il %>% 
+  summarize(meandennys4 = mean(mindistance, na.rm = TRUE)) 
+
+print(meandennys)
+
+```
+
+The mean distance of Dennys to the closest La Quinta is 23.2 km in Illinois. 
+
+###Conclusion
+
+Out of all the analyses over Texas, North Carolina, Alaska, and Illinois I have come to the conclusion that Hedberg's joke holds true the most for Texas. Texas by far has the most observations of pairings of La Quinta and Dennys locations, and the resulting minimum distance after analysis is quite small between locations being 5.79km. 
