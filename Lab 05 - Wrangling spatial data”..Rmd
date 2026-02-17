@@ -1,7 +1,7 @@
 ---
 title: "Lab 05 - La Quinta is Spanish for next to Denny's, Pt. 2"
 author: "Charlize Ezernack"
-date: "Insert date here"
+date: "02-17-26"
 output: github_document
 ---
 
@@ -21,7 +21,7 @@ states <- read_csv("data/states.csv")
 
 ### Exercise 1
 
-```{r filterdennys}
+```{r filterdennysAK}
 dn_ak <- dennys %>%
   filter(state == "AK")
 nrow(dn_ak)
@@ -32,7 +32,7 @@ There are 3 Dennys locations in Alaska.
 
 ### Exercise 2
 
-```{r filterquinta}
+```{r filterquintaAK}
 lq_ak <- laquinta %>%
   filter(state == "AK")
 nrow(lq_ak)
@@ -48,7 +48,7 @@ We are looking of 6 pairings of Dennys x La Quinta locations so I will need to c
 
 ### Exercise 4
 
-```{r joindata}
+```{r joindataAK}
 
 dn_lq_ak <- full_join(dn_ak, lq_ak,
   by = "state"
@@ -65,7 +65,7 @@ We will use the mutate() function to add a new variable into the data frame whil
 
 
 ### Exercise 6
-```{r calculatedistance}
+```{r calculatedistanceAK}
 haversine <- function(longitude.x, latitude.x, longitude.y, latitude.y, round = 3) {
   
 
@@ -89,7 +89,7 @@ dn_lq_ak <- dn_lq_ak %>% mutate(distance = haversine(longitude.x, latitude.x, lo
 
 ### Exercise 7
 
-```{r mindennys}
+```{r mindennysAK}
 dn_lq_ak <- dn_lq_ak %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE)) %>% ungroup()
 
 meandennys <- dn_lq_ak %>% 
@@ -100,8 +100,8 @@ print(meandennys)
 ```
 
 ### Exercise 8
-```{r mindennys}
- dn_lq_ak %>% ggplot(aes( x = mindistance, fill=address.x)) + geom_histogram(binwidth = .5) + labs(title = "Denny's in Alaska", subtitle = "The minimum distance from each Denny's to a La Quinta location")
+```{r plotmindennysAK}
+ dn_lq_ak %>% ggplot(aes( x = mindistance, y = 0)) + geom_point() + labs(title = "Denny's in Alaska", subtitle = "The minimum distance from each Denny's to a La Quinta location")
 
 
 ```
@@ -156,6 +156,8 @@ dn_lq_nc <- dn_lq_nc %>% mutate(distance = haversine(longitude.x, latitude.x, lo
 
 ```{r mindennysnc}
 dn_lq_nc <- dn_lq_nc %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE)) %>% ungroup()
+
+dn_lq_nc %>% ggplot(aes( x = mindistance, y = 0)) + geom_point() + labs(title = "Denny's in North Carolina", subtitle = "The minimum distance from each Denny's to a La Quinta location")
 
 meandennys <- dn_lq_nc %>% 
   summarize(meandennys2 = mean(mindistance, na.rm = TRUE)) 
@@ -217,6 +219,8 @@ dn_lq_tx <- dn_lq_tx %>% mutate(distance = haversine(longitude.x, latitude.x, lo
 ```{r mindennystx}
 dn_lq_tx <- dn_lq_tx %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE)) %>% ungroup()
 
+dn_lq_tx %>% ggplot(aes( x = mindistance, y = 0)) + geom_point() + labs(title = "Denny's in Texas", subtitle = "The minimum distance from each Denny's to a La Quinta location")
+
 meandennys <- dn_lq_tx %>% 
   summarize(meandennys3 = mean(mindistance, na.rm = TRUE)) 
 
@@ -226,7 +230,7 @@ print(meandennys)
 
 The mean distance of Dennys to the closest La Quinta is 5.79 km in Texas. 
 
-### Exercise 10
+### Exercise 11
 ```{r filterIL}
 dn_il <- dennys %>%
   filter(state == "IL")
@@ -275,6 +279,8 @@ dn_lq_il <- dn_lq_il %>% mutate(distance = haversine(longitude.x, latitude.x, lo
 ```{r mindennysil}
 dn_lq_il <- dn_lq_il %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE)) %>% ungroup()
 
+dn_lq_il %>% ggplot(aes( x = mindistance, y = 0)) + geom_point() + labs(title = "Denny's in Illinois", subtitle = "The minimum distance from each Denny's to a La Quinta location")
+
 meandennys <- dn_lq_il %>% 
   summarize(meandennys4 = mean(mindistance, na.rm = TRUE)) 
 
@@ -284,6 +290,6 @@ print(meandennys)
 
 The mean distance of Dennys to the closest La Quinta is 23.2 km in Illinois. 
 
-###Conclusion
+### Exercise 12 Conclusion
 
 Out of all the analyses over Texas, North Carolina, Alaska, and Illinois I have come to the conclusion that Hedberg's joke holds true the most for Texas. Texas by far has the most observations of pairings of La Quinta and Dennys locations, and the resulting minimum distance after analysis is quite small between locations being 5.79km. 
