@@ -84,16 +84,19 @@ haversine <- function(longitude.x, latitude.x, longitude.y, latitude.y, round = 
   
 } 
 dn_lq_ak <- dn_lq_ak %>% mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
+
 ```
 
 ### Exercise 7
 
 ```{r mindennys}
-dn_lq_ak <- dn_lq_ak %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = TRUE))
+dn_lq_ak <- dn_lq_ak %>% group_by(address.x) %>% mutate(mindistance = min(distance, na.rm = FALSE))
 
 ```
 
 ### Exercise 8
 ```{r mindennys}
- dn_lq_ak %>% ggplot(aes(x=mindistance)) + geom_bar()
+ ##dn_lq_ak %>% ggplot(aes(x=mindistance)) + geom_bar()
 ```
+
+The distribution of Dennys to the closest La Quinta is over 16,000 miles in alaska.  
